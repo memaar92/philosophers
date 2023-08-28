@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 13:12:59 by mamesser          #+#    #+#             */
-/*   Updated: 2023/08/28 14:19:48 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/08/28 15:52:21 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@
 
 typedef struct s_philo
 {
-	int	id;
-	int	left_fork;
-	int	right_fork;
+	int				id;
+	pthread_mutex_t	left_fork;
+	pthread_mutex_t	right_fork;
 	// some timestamp to determine starvation
 	
 }				t_philo;
@@ -32,10 +32,12 @@ typedef struct s_philo
 
 typedef struct s_vars
 {
-	int		time_to_die;
-	int		time_to_eat;
-	int		time_to_sleep;
-	t_philo	*philo;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				count_philo;
+	t_philo			*philo;
+	pthread_mutex_t	*forks;	
 }				t_vars;
 
 
