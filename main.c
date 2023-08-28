@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 16:58:54 by mamesser          #+#    #+#             */
-/*   Updated: 2023/08/28 16:24:01 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/08/28 20:32:23 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_vars *init_vars(int num_philo) // add args for time to die/eat/sleep
 	t_vars	*vars;
 
 	i = 0;
-	vars = malloc(num_philo * sizeof(*vars) + 1000);
+	vars = malloc(num_philo * sizeof(*vars));
 	if (!vars)
 		return (NULL);
 	while (i < num_philo)
@@ -86,13 +86,13 @@ void	*philosopher_dines(void *arg) // probably philo id as argument; also needs 
 		}
 		// if philo has two forks taken up, philo eats for X milliseconds (provided as argument); use usleep?
 		printf("%d: Philosopher %d is eating\n", get_timestamp(), vars->philo->id);
-		usleep(5000000); // takes microseconds 1000000ms = 1sec
+		usleep(1000000); // takes microseconds 1000000ms = 1sec
 
 		// once philo has finished eating, unlock the used forks
 
 		//start sleeping for X milliseconds (provided as argument); use usleep?
 		printf("%d: Philosopher %d is sleeping\n", get_timestamp(), vars->philo->id);
-		usleep(5000000);
+		usleep(1000000);
 
 		printf("%d: Philosopher %d is thinking\n", get_timestamp(), vars->philo->id);
 	}
@@ -114,6 +114,7 @@ int	main(int argc, char **argv)
 	vars = init_vars(num_philo);
 	if (!vars)
 		return (1);
+		
 	while (i < num_philo)
 	{
 		// create threads for each philosopher (number is given by argv[1]; struct for each philo?)
@@ -122,7 +123,7 @@ int	main(int argc, char **argv)
 		i++;
 	}
 	i = 0;
-	while (i < 10)
+	while (i < num_philo)
 	{
 		if (pthread_join(newthread[i], NULL))
 			return (1);
