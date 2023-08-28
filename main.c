@@ -6,11 +6,20 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 16:58:54 by mamesser          #+#    #+#             */
-/*   Updated: 2023/08/28 14:20:47 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/08/28 14:44:50 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./includes/philo.h"
+
+
+int get_timestamp() // 1000 microsec are 1 millisec
+{
+	struct timeval tv;
+	
+	gettimeofday(&tv, NULL);
+	return(tv.tv_usec / 1000);
+}
 
 t_vars *init_vars(int num_philo) // add args for time to die/eat/sleep
 {
@@ -43,29 +52,29 @@ void	*philosopher_dines(void *arg) // probably philo id as argument; also needs 
 		if (vars->philo->id % 2 != 0)
 		{
 			// check if fork is logged, if not, take the left fork
-			printf("TIMESTAMP: Philosopher %d has taken the left fork\n", vars->philo->id);
+			printf("%d: Philosopher %d has taken the left fork\n", get_timestamp(), vars->philo->id);
 			// check if fork is logged, if not, take the right fork
-			printf("TIMESTAMP: Philosopher %d has taken the right fork\n", vars->philo->id);
+			printf("%d: Philosopher %d has taken the right fork\n", get_timestamp(), vars->philo->id);
 			
 		}
 		else if (vars->philo->id % 2 == 0)
 		{
 			// check if fork is logged, if not, take the right fork
-			printf("TIMESTAMP: Philosopher %d has taken the right fork\n", vars->philo->id);
+			printf("%d: Philosopher %d has taken the right fork\n", get_timestamp(), vars->philo->id);
 			// check if fork is logged, if not, take the left fork
-			printf("TIMESTAMP: Philosopher %d has taken the left fork\n", vars->philo->id);
+			printf("%d: Philosopher %d has taken the left fork\n", get_timestamp(), vars->philo->id);
 		}
 		// if philo has two forks taken up, philo eats for X milliseconds (provided as argument); use usleep?
-		printf("TIMESTAMP: Philosopher %d is eating\n", vars->philo->id);
+		printf("%d: Philosopher %d is eating\n", get_timestamp(), vars->philo->id);
 		usleep(5000000); // takes microseconds 1000000ms = 1sec
 
 		// once philo has finished eating, unlock the used forks
 
 		//start sleeping for X milliseconds (provided as argument); use usleep?
-		printf("TIMESTAMP: Philosopher %d is sleeping\n", vars->philo->id);
+		printf("%d: Philosopher %d is sleeping\n", get_timestamp(), vars->philo->id);
 		usleep(5000000);
 
-		printf("TIMESTAMP: Philosopher %d is thinking\n", vars->philo->id);
+		printf("%d: Philosopher %d is thinking\n", get_timestamp(), vars->philo->id);
 	}
 	return (NULL);
 }
@@ -75,7 +84,7 @@ int	main(int argc, char **argv)
 {
 	pthread_t	*newthread;
 	t_vars		*vars;
-	int			num_philo = 2;
+	int			num_philo = 1;
 	int			i;
 
 	i = 0;
