@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 16:58:54 by mamesser          #+#    #+#             */
-/*   Updated: 2023/08/29 15:15:51 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/08/29 17:03:53 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,45 +21,6 @@ int get_timestamp() // 1000 microsec are 1 millisec
 	gettimeofday(&tv, NULL);
 	return(tv.tv_usec / 1000);
 }
-
-t_vars *init_vars(int num_philo) // add args for time to die/eat/sleep
-{
-	int		i;
-	int		j;
-	t_vars	*vars;
-
-	i = 0;
-	vars = malloc(sizeof(*vars));
-	if (!vars)
-		return (NULL);
-
-	vars->time_to_die = 300;
-	vars->time_to_eat = 10;
-	vars->time_to_sleep = 50;
-	vars->forks = malloc(num_philo * sizeof((*(vars->forks))));
-	if (!(vars->forks))
-		return (NULL);
-	vars->philo = malloc(num_philo * sizeof(*(vars->philo)));
-	if (!(vars->philo))
-		return (NULL);
-	while (i < num_philo)
-		pthread_mutex_init(&vars->forks[i++], NULL);
-	
-	i = 0;
-	while (i < num_philo)
-	{
-		vars->philo[i].id = i + 1;
-		vars->philo[i].count_philo = num_philo;
-		vars->philo[i].left_fork = &vars->forks[i];
-		if (i + 1 == num_philo)
-			vars->philo[i].right_fork = &vars->forks[0];
-		else
-			vars->philo[i].right_fork = &vars->forks[i + 1];
-		i++;
-	}
-	return (vars);
-}
-
 
 void	*philosopher_dines(void *arg) // probably philo id as argument; also needs info about time to eat etc.
 {
@@ -83,7 +44,7 @@ void	*philosopher_dines(void *arg) // probably philo id as argument; also needs 
 
 			// check if fork is logged, if not, take the right fork
 			pthread_mutex_lock(philo->right_fork);
-			printf("%d: Philosopher %d has taken taken fork %d\n", get_timestamp(), philo->id, right);
+			printf("%d: Philosopher %d has taken fork %d\n", get_timestamp(), philo->id, right);
 		}
 		else if (philo->id % 2 == 0)
 		{
@@ -120,11 +81,13 @@ int	main(int argc, char **argv)
 	int			num_philo = 2;
 	int			i;
 
+	(void)(argc);
+	(void)(argv);
 	i = 0;
 	newthread = malloc(num_philo * sizeof(*newthread));
 	if (!newthread)
 		return (1);
-	vars = init_vars(num_philo);
+	vars = init_structs(num_philo);
 	if (!vars)
 		return (1);
 	// forks = malloc(sizeof(pthread_mutex_t));
