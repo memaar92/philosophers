@@ -6,12 +6,13 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 16:58:54 by mamesser          #+#    #+#             */
-/*   Updated: 2023/08/28 20:32:23 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/08/29 11:27:07 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./includes/philo.h"
 
+pthread_mutex_t	*forks;
 
 int get_timestamp() // 1000 microsec are 1 millisec
 {
@@ -30,10 +31,13 @@ t_vars *init_vars(int num_philo) // add args for time to die/eat/sleep
 	vars = malloc(num_philo * sizeof(*vars));
 	if (!vars)
 		return (NULL);
+
+	// How to initialize the fork mutexes so that each is only initialized once?
+	// vars->forks = malloc(sizeof(pthread_mutex_t));
+	// pthread_mutex_init(&vars->forks[0], NULL);
+	// pthread_mutex_init(&vars->forks[1], NULL);
 	while (i < num_philo)
 	{
-		(vars[i]).forks = malloc(sizeof(pthread_mutex_t));
-		pthread_mutex_init(&(vars[i]).forks[i], NULL);
 		(vars[i]).count_philo = num_philo;
 		(vars[i]).time_to_die = 300;
 		(vars[i]).time_to_eat = 10;
@@ -62,31 +66,29 @@ void	*philosopher_dines(void *arg) // probably philo id as argument; also needs 
 		if (vars->philo->id % 2 != 0)
 		{
 			// check if fork is logged, if not, take the left fork
-			pthread_mutex_lock(&(vars->forks[left]));
+			pthread_mutex_lock(&(forks[left]));
 			printf("%d: Philosopher %d has taken fork %d\n", get_timestamp(), vars->philo->id, left);
 			usleep(5000000);
-			pthread_mutex_unlock(&(vars->forks[left]));
 
 			// check if fork is logged, if not, take the right fork
-			pthread_mutex_lock(&(vars->forks[right]));
+			pthread_mutex_lock(&(forks[right]));
 			printf("%d: Philosopher %d has taken taken fork %d\n", get_timestamp(), vars->philo->id, right);
-			pthread_mutex_unlock(&(vars->forks[right]));
 		}
 		else if (vars->philo->id % 2 == 0)
 		{
 			// check if fork is logged, if not, take the right fork
-			pthread_mutex_lock(&(vars->forks[right]));
+			pthread_mutex_lock(&(forks[right]));
 			printf("%d: Philosopher %d has taken fork %d\n", get_timestamp(), vars->philo->id, right);
-			pthread_mutex_unlock(&(vars->forks[right]));
 			
 			// check if fork is logged, if not, take the left fork
-			pthread_mutex_lock(&(vars->forks[left]));
+			pthread_mutex_lock(&(forks[left]));
 			printf("%d: Philosopher %d has taken fork %d\n", get_timestamp(), vars->philo->id, left);
-			pthread_mutex_unlock(&(vars->forks[left]));
 		}
 		// if philo has two forks taken up, philo eats for X milliseconds (provided as argument); use usleep?
 		printf("%d: Philosopher %d is eating\n", get_timestamp(), vars->philo->id);
 		usleep(1000000); // takes microseconds 1000000ms = 1sec
+		pthread_mutex_unlock(&(forks[right]));
+		pthread_mutex_unlock(&(forks[left]));
 
 		// once philo has finished eating, unlock the used forks
 
@@ -114,7 +116,10 @@ int	main(int argc, char **argv)
 	vars = init_vars(num_philo);
 	if (!vars)
 		return (1);
-		
+	forks = malloc(sizeof(pthread_mutex_t));
+	pthread_mutex_init(&forks[0], NULL);
+	pthread_mutex_init(&forks[1], NULL);
+	
 	while (i < num_philo)
 	{
 		// create threads for each philosopher (number is given by argv[1]; struct for each philo?)
@@ -127,7 +132,7 @@ int	main(int argc, char **argv)
 	{
 		if (pthread_join(newthread[i], NULL))
 			return (1);
-		pthread_mutex_destroy(&(vars[i]).forks[i]);
+		pthread_mutex_destroy(&(forks[i]));
 		i++;
 	}
 }
