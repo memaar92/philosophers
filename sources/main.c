@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 16:58:54 by mamesser          #+#    #+#             */
-/*   Updated: 2023/08/29 17:03:53 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/08/29 17:23:16 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,32 @@ int get_timestamp() // 1000 microsec are 1 millisec
 	return(tv.tv_usec / 1000);
 }
 
+int	take_fork_even_philo(t_philo *philo, int left, int right)
+{
+	pthread_mutex_lock(philo->right_fork);
+	printf("%d: Philosopher %d has taken fork %d\n", get_timestamp(), philo->id, right);
+	
+	pthread_mutex_lock(philo->left_fork);
+	printf("%d: Philosopher %d has taken fork %d\n", get_timestamp(), philo->id, left);
+	return (0);
+}
+
+
+int	take_fork_uneven_philo(t_philo *philo, int left, int right)
+{
+	pthread_mutex_lock(philo->left_fork);
+	printf("%d: Philosopher %d has taken fork %d\n", get_timestamp(), philo->id, left);
+	usleep(5000000); // for testing purposes
+
+	pthread_mutex_lock(philo->right_fork);
+	printf("%d: Philosopher %d has taken fork %d\n", get_timestamp(), philo->id, right);
+	return (0);
+}
+
 void	*philosopher_dines(void *arg) // probably philo id as argument; also needs info about time to eat etc.
 {
 	t_philo *philo = (t_philo *)arg;
+	// definition of left and right for testing purposes
 	int	left;
 	int	right;
 
@@ -36,35 +59,18 @@ void	*philosopher_dines(void *arg) // probably philo id as argument; also needs 
 	while (1) // also stop if all philos have eaten at least x times (provided as argument)
 	{
 		if (philo->id % 2 != 0)
-		{
-			// check if fork is logged, if not, take the left fork
-			pthread_mutex_lock(philo->left_fork);
-			printf("%d: Philosopher %d has taken fork %d\n", get_timestamp(), philo->id, left);
-			usleep(5000000);
-
-			// check if fork is logged, if not, take the right fork
-			pthread_mutex_lock(philo->right_fork);
-			printf("%d: Philosopher %d has taken fork %d\n", get_timestamp(), philo->id, right);
-		}
+			take_fork_uneven_philo(philo, left, right);
 		else if (philo->id % 2 == 0)
-		{
-			// check if fork is logged, if not, take the right fork
-			pthread_mutex_lock(philo->right_fork);
-			printf("%d: Philosopher %d has taken fork %d\n", get_timestamp(), philo->id, right);
-			
-			// check if fork is logged, if not, take the left fork
-			pthread_mutex_lock(philo->left_fork);
-			printf("%d: Philosopher %d has taken fork %d\n", get_timestamp(), philo->id, left);
-		}
-		// if philo has two forks taken up, philo eats for X milliseconds (provided as argument); use usleep?
+			take_fork_even_philo(philo, left, right);
+		// if philo has two forks taken up, philo eats for X milliseconds (provided as argument);
 		printf("%d: Philosopher %d is eating\n", get_timestamp(), philo->id);
 		usleep(1000000); // takes microseconds 1000000ms = 1sec
+		
+		// once philo has finished eating, unlock the used forks
 		pthread_mutex_unlock(philo->right_fork);
 		pthread_mutex_unlock(philo->left_fork);
 
-		// once philo has finished eating, unlock the used forks
-
-		//start sleeping for X milliseconds (provided as argument); use usleep?
+		//start sleeping for X milliseconds (provided as argument);
 		printf("%d: Philosopher %d is sleeping\n", get_timestamp(), philo->id);
 		usleep(1000000);
 
@@ -90,9 +96,6 @@ int	main(int argc, char **argv)
 	vars = init_structs(num_philo);
 	if (!vars)
 		return (1);
-	// forks = malloc(sizeof(pthread_mutex_t));
-	// pthread_mutex_init(&forks[0], NULL);
-	// pthread_mutex_init(&forks[1], NULL);
 	
 	while (i < num_philo)
 	{
@@ -102,6 +105,7 @@ int	main(int argc, char **argv)
 		i++;
 	}
 	i = 0;
+	// wait for threads to finish
 	while (i < num_philo)
 	{
 		if (pthread_join(newthread[i], NULL))
