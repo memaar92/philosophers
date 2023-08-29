@@ -6,13 +6,11 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 16:58:54 by mamesser          #+#    #+#             */
-/*   Updated: 2023/08/29 17:23:16 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/08/29 18:23:55 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./includes/philo.h"
-
-// pthread_mutex_t	*forks;
 
 int get_timestamp() // 1000 microsec are 1 millisec
 {
@@ -56,7 +54,7 @@ void	*philosopher_dines(void *arg) // probably philo id as argument; also needs 
 		right = 0;
 	else
 		right = philo->id;
-	while (1) // also stop if all philos have eaten at least x times (provided as argument)
+	while (1) // also stop if all philos have eaten at least x times (provided as argument) or a philo died
 	{
 		if (philo->id % 2 != 0)
 			take_fork_uneven_philo(philo, left, right);
@@ -64,6 +62,8 @@ void	*philosopher_dines(void *arg) // probably philo id as argument; also needs 
 			take_fork_even_philo(philo, left, right);
 		// if philo has two forks taken up, philo eats for X milliseconds (provided as argument);
 		printf("%d: Philosopher %d is eating\n", get_timestamp(), philo->id);
+		// track the point in time the philo has started eating and store it in the respective philo struct
+		// track the number of meals a philo has consumed
 		usleep(1000000); // takes microseconds 1000000ms = 1sec
 		
 		// once philo has finished eating, unlock the used forks
@@ -78,7 +78,6 @@ void	*philosopher_dines(void *arg) // probably philo id as argument; also needs 
 	}
 	return (NULL);
 }
-
 
 int	main(int argc, char **argv)
 {
@@ -114,3 +113,12 @@ int	main(int argc, char **argv)
 		i++;
 	}
 }
+
+/*
+TODOS:
+- where to check if a philosopher has died?
+- timestamp should probably start at 0?
+- How to account for the inaccuracy of the usleep function?
+
+*/
+

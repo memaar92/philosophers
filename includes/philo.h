@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 13:12:59 by mamesser          #+#    #+#             */
-/*   Updated: 2023/08/29 15:47:13 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/08/29 17:58:53 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ typedef struct s_philo
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	int				count_philo;
-	// some timestamp to determine starvation
-	
+	int				start_eat;
+	int				meals_eaten;
 }				t_philo;
 
 
