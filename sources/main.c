@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 16:58:54 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/02 14:44:04 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/02 15:04:20 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	take_fork_uneven_philo(t_philo *philo, int left, int right)
 	if (!(philo->vars->all_alive))
 		return (1);
 	printf("%d: Philosopher %d has taken fork %d\n", get_timestamp(), philo->id, left);
-	usleep(5000000); // for testing purposes
+	// usleep(50000); // for testing purposes
 
 	pthread_mutex_lock(philo->right_fork);
 	if (!(philo->vars->all_alive))
@@ -103,12 +103,11 @@ void	*philosopher_dines(void *arg) // probably philo id as argument; also needs 
 		if (!(philo->vars->all_alive))
 			return (NULL);
 		printf("%d: Philosopher %d is eating\n", get_timestamp(), philo->id);
+		usleep(philo->vars->time_to_eat * 1000);
 		gettimeofday(&tv, NULL);
-		philo->time_of_death = tv.tv_sec * 1000000 + tv.tv_usec + 10000000;
+		philo->time_of_death = tv.tv_sec * 1000000 + tv.tv_usec + (philo->vars->time_to_die * 1000);
 		// track the point in time the philo has started eating and store it in the respective philo struct
 		// track the number of meals a philo has consumed
-
-		usleep(1000000); // takes microseconds 1000000ms = 1sec
 		
 		// once philo has finished eating, unlock the used forks
 		pthread_mutex_unlock(philo->right_fork);
@@ -118,7 +117,7 @@ void	*philosopher_dines(void *arg) // probably philo id as argument; also needs 
 		if (!(philo->vars->all_alive))
 			return (NULL);
 		printf("%d: Philosopher %d is sleeping\n", get_timestamp(), philo->id);
-		usleep(1000000);
+		usleep(philo->vars->time_to_sleep * 1000);
 
 		printf("%d: Philosopher %d is thinking\n", get_timestamp(), philo->id);
 	}
@@ -150,7 +149,6 @@ int	main(int argc, char **argv)
 		return (1);
 	while (i < num_philo)
 	{
-		// create threads for each philosopher (number is given by argv[1]; struct for each philo?)
 		if (pthread_create(&newthread[i], NULL, philosopher_dines, &vars->philo[i]))
 			return (1);
 		i++;
@@ -168,7 +166,6 @@ int	main(int argc, char **argv)
 
 /*
 TODOS:
-- where to check if a philosopher has died?
 - timestamp should probably start at 0?
 - How to account for the inaccuracy of the usleep function?
 
