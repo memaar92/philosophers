@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:38:53 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/02 14:59:26 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/02 17:45:57 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	init_philos(t_vars *vars, int num_philo)
 		//set all vars to 0/NULL
 		vars->philo[i].vars = vars;
 		vars->philo[i].id = i + 1;
+		vars->philo[i].meals_eaten = 0;
 		vars->philo[i].time_of_death = time + (vars->time_to_die * 1000);
 		vars->philo[i].count_philo = num_philo;
 		vars->philo[i].left_fork = &vars->forks[i];

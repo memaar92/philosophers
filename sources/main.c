@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 16:58:54 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/02 16:59:46 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/02 17:48:13 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ int	take_fork_uneven_philo(t_philo *philo, int left, int right)
 	if (!(philo->vars->all_alive))
 		return (1);
 	printf("%ld: Philosopher %d has taken fork %d\n", get_timestamp(philo), philo->id, left);
-	// usleep(50000); // for testing purposes
 
 	pthread_mutex_lock(philo->right_fork);
 	if (!(philo->vars->all_alive))
@@ -118,6 +117,7 @@ void	*philosopher_dines(void *arg) // probably philo id as argument; also needs 
 		gettimeofday(&tv, NULL);
 		philo->time_of_death = tv.tv_sec * 1000000 + tv.tv_usec + (philo->vars->time_to_die * 1000);
 		ft_usleep(philo->vars->time_to_eat);
+		philo->meals_eaten++;
 		// track the point in time the philo has started eating and store it in the respective philo struct
 		// track the number of meals a philo has consumed
 		
@@ -131,6 +131,8 @@ void	*philosopher_dines(void *arg) // probably philo id as argument; also needs 
 		printf("%ld: Philosopher %d is sleeping\n", get_timestamp(philo), philo->id);
 		ft_usleep(philo->vars->time_to_sleep);
 
+		if (!(philo->vars->all_alive))
+			return (NULL);
 		printf("%ld: Philosopher %d is thinking\n", get_timestamp(philo), philo->id);
 	}
 	return (NULL);
@@ -167,7 +169,6 @@ int	main(int argc, char **argv)
 		i++;
 	}
 	i = 0;
-	// wait for threads to finish
 	while (i < num_philo)
 	{
 		if (pthread_join(newthread[i], NULL))
@@ -179,8 +180,7 @@ int	main(int argc, char **argv)
 
 /*
 TODOS:
-- timestamp should probably start at 0?
-- How to account for the inaccuracy of the usleep function?
-
+- solution does not work yet for uneven numbers. Might have to wait briefly when thinking or sleep the even ones for some microsec when entering the loop
+- implement 5th argument (number of meals eaten) --> probably checked together with wheather all philos are still alive
 */
 
