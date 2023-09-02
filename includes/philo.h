@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 13:12:59 by mamesser          #+#    #+#             */
-/*   Updated: 2023/08/29 17:58:53 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/02 13:48:04 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,18 @@
 # include <stdlib.h>
 # include <sys/time.h>
 
+typedef struct s_vars	t_vars;
+
 typedef struct s_philo
 {
 	int				id;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	int				count_philo;
-	int				start_eat;
+	int				start_eat; //instead using calculated death time
+	long			time_of_death;
 	int				meals_eaten;
+	t_vars			*vars;
 }				t_philo;
 
 
@@ -36,6 +40,7 @@ typedef struct s_vars
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
+	int				all_alive;
 	t_philo			*philo;
 	pthread_mutex_t	*forks;
 }				t_vars;
