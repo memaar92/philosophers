@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 13:12:59 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/02 15:55:26 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/02 16:27:02 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ typedef struct s_vars
 
 t_vars *init_structs(char **argv, int num_philo);
 int		ft_atoi(const char *str);
+int	ft_usleep(int wait);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:40:48 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/02 14:42:06 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/02 16:39:16 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,21 @@ int	ft_atoi(const char *str)
 	while (str[i] >= '0' && str[i] <= '9')
 		result = result * 10 + str[i++] - '0';
 	return (sign * result);
+}
+
+int	ft_usleep(int wait)
+{
+	struct timeval	tv;
+	long			time;
+	long			time2;
+	
+	gettimeofday(&tv, NULL);
+	time = ((tv.tv_sec * 1000000 + tv.tv_usec) / 1000);
+	time2 = time + (wait / 1000) - 1;
+	while (time <= time2)
+	{
+		gettimeofday(&tv, NULL);
+		time = ((tv.tv_sec * 1000000 + tv.tv_usec) / 1000);
+	}
+	return(0);
 }
