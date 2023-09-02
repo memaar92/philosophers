@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 13:12:59 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/02 14:43:32 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/02 15:55:26 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_vars
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				all_alive;
+	long			start_sim;
 	t_philo			*philo;
 	pthread_mutex_t	*forks;
 }				t_vars;
