@@ -6,11 +6,11 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 16:58:54 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/02 14:26:52 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/02 14:44:04 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/philo.h"
+#include "../includes/philo.h"
 
 int get_timestamp() // 1000 microsec are 1 millisec
 {
@@ -53,7 +53,7 @@ void *check_on_philos(void *arg)
 			if (vars->philo[i].time_of_death <= (tv.tv_sec * 1000000 + tv.tv_usec))
 			{
 				vars->all_alive = 0;
-				printf("%d: Philosopher %d is dead\n", get_timestamp(), vars->philo[i].id);
+				printf("%d: Philosopher %d died\n", get_timestamp(), vars->philo[i].id);
 				while (j < num_philos)
 					pthread_mutex_unlock(&vars->forks[j++]);
 				break ;
@@ -130,19 +130,20 @@ int	main(int argc, char **argv)
 	pthread_t	*newthread;
 	pthread_t	checking;
 	t_vars		*vars;
-	int			num_philo = 2;
+	int			num_philo;
 	int			i;
 
-	(void)(argc);
-	(void)(argv);
+	if (argc < 5)
+		return (printf("Too few arguments\n"), 1);
 	i = 0;
+	num_philo = ft_atoi(argv[1]);
 	checking = malloc(sizeof(*checking));
 	if (!checking)
 		return (1);
 	newthread = malloc(num_philo * sizeof(*newthread));
 	if (!newthread)
 		return (1);
-	vars = init_structs(num_philo);
+	vars = init_structs(argv, num_philo);
 	if (!vars)
 		return (1);
 	if (pthread_create(&checking, NULL, check_on_philos, vars))

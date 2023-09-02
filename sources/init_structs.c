@@ -6,11 +6,11 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:38:53 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/02 14:24:18 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/02 14:45:27 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./includes/philo.h"
+#include "../includes/philo.h"
 
 t_vars *alloc_mem(int num_philo)
 {
@@ -28,11 +28,11 @@ t_vars *alloc_mem(int num_philo)
 	return (vars);
 }
 
-void	set_static_vars(t_vars *vars)
+void	set_static_vars(t_vars *vars, char **argv)
 {
-	vars->time_to_die = 300;
-	vars->time_to_eat = 10;
-	vars->time_to_sleep = 50;
+	vars->time_to_die = ft_atoi(argv[2]); // in milliseconds
+	vars->time_to_eat = ft_atoi(argv[3]); // in milliseconds
+	vars->time_to_sleep = ft_atoi(argv[4]); // in milliseconds
 	vars->all_alive = 1;
 }
 
@@ -63,7 +63,7 @@ int	init_philos(t_vars *vars, int num_philo)
 }
 
 
-t_vars *init_structs(int num_philo) // add args for time to die/eat/sleep
+t_vars *init_structs(char **argv, int num_philo) // add args for time to die/eat/sleep
 {
 	t_vars	*vars;
 	int		i;
@@ -72,7 +72,7 @@ t_vars *init_structs(int num_philo) // add args for time to die/eat/sleep
 	vars = alloc_mem(num_philo);
 	if (!vars)
 		return (NULL);
-	set_static_vars(vars);
+	set_static_vars(vars, argv);
 	while (i < num_philo)
 		pthread_mutex_init(&vars->forks[i++], NULL);
 	init_philos(vars, num_philo);
