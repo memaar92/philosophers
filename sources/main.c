@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 16:58:54 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/02 16:39:06 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/02 16:59:46 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	*philosopher_dines(void *arg) // probably philo id as argument; also needs 
 		printf("%ld: Philosopher %d is eating\n", get_timestamp(philo), philo->id);
 		gettimeofday(&tv, NULL);
 		philo->time_of_death = tv.tv_sec * 1000000 + tv.tv_usec + (philo->vars->time_to_die * 1000);
-		ft_usleep(philo->vars->time_to_eat * 1000);
+		ft_usleep(philo->vars->time_to_eat);
 		// track the point in time the philo has started eating and store it in the respective philo struct
 		// track the number of meals a philo has consumed
 		
@@ -129,7 +129,7 @@ void	*philosopher_dines(void *arg) // probably philo id as argument; also needs 
 		if (!(philo->vars->all_alive))
 			return (NULL);
 		printf("%ld: Philosopher %d is sleeping\n", get_timestamp(philo), philo->id);
-		ft_usleep(philo->vars->time_to_sleep * 1000);
+		ft_usleep(philo->vars->time_to_sleep);
 
 		printf("%ld: Philosopher %d is thinking\n", get_timestamp(philo), philo->id);
 	}
