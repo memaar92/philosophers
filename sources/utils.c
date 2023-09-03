@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:40:48 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/02 17:03:12 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/03 14:54:51 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,34 +42,3 @@ int	ft_atoi(const char *str)
 		result = result * 10 + str[i++] - '0';
 	return (sign * result);
 }
-
-int	ft_usleep(int wait)
-{
-	struct timeval	tv;
-	long			time;
-	long			time2;
-	
-	gettimeofday(&tv, NULL);
-	time = ((tv.tv_sec * 1000000 + tv.tv_usec) / 1000);
-	time2 = time + wait;
-	while (time < time2)
-	{
-		gettimeofday(&tv, NULL);
-		time = ((tv.tv_sec * 1000000 + tv.tv_usec) / 1000);
-	}
-	return(0);
-}
-
-
-// alternative approach to create usleep
-// void	start_action(t_philosopher *philo, int duration)
-// {
-// 	long	start_time;
-
-// 	start_time = gettime();
-// 	while (gettime() - start_time < duration)
-// 	{
-// 		if (stop_sim(philo->pd) == true)
-// 			break ;
-// 	}
-// }

@@ -6,16 +6,16 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:38:53 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/02 17:45:57 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/03 16:19:42 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-t_vars *alloc_mem(int num_philo)
+t_vars	*alloc_mem(int num_philo)
 {
 	t_vars	*vars;
-	
+
 	vars = malloc(sizeof(*vars));
 	if (!vars)
 		return (NULL);
@@ -28,17 +28,18 @@ t_vars *alloc_mem(int num_philo)
 	return (vars);
 }
 
-void	set_static_vars(t_vars *vars, char **argv)
+void	set_static_vars(t_vars *vars, char **argv, int num_philo)
 {
 	vars->time_to_die = ft_atoi(argv[2]); // in milliseconds
 	vars->time_to_eat = ft_atoi(argv[3]); // in milliseconds
 	vars->time_to_sleep = ft_atoi(argv[4]); // in milliseconds
+	vars->num_philo = num_philo;
 	vars->all_alive = 1;
 }
 
 int	init_philos(t_vars *vars, int num_philo)
 {
-	int	i;
+	int				i;
 	struct timeval	tv;
 	long			time;
 
@@ -63,8 +64,7 @@ int	init_philos(t_vars *vars, int num_philo)
 	return (0);
 }
 
-
-t_vars *init_structs(char **argv, int num_philo) // add args for time to die/eat/sleep
+t_vars	*init_structs(char **argv, int num_philo) // add args for time to die/eat/sleep
 {
 	t_vars	*vars;
 	int		i;
@@ -73,9 +73,26 @@ t_vars *init_structs(char **argv, int num_philo) // add args for time to die/eat
 	vars = alloc_mem(num_philo);
 	if (!vars)
 		return (NULL);
-	set_static_vars(vars, argv);
+	set_static_vars(vars, argv, num_philo);
 	while (i < num_philo)
 		pthread_mutex_init(&vars->forks[i++], NULL);
 	init_philos(vars, num_philo);
 	return (vars);
+}
+
+int	init_vars(pthread_t **checking, pthread_t **newthread, char **argv, t_vars **vars)
+{
+	int	num_philo;
+
+	num_philo = ft_atoi(argv[1]);
+	*checking = malloc(sizeof(**checking));
+	if (!(*checking))
+		return (1);
+	*newthread = malloc(num_philo * sizeof(**newthread));
+	if (!(*newthread))
+		return (1);
+	*vars = init_structs(argv, num_philo);
+	if (!(*vars))
+		return (1);
+	return (0);
 }
