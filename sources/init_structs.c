@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:38:53 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/03 16:19:42 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/03 18:24:48 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ void	set_static_vars(t_vars *vars, char **argv, int num_philo)
 	vars->time_to_die = ft_atoi(argv[2]); // in milliseconds
 	vars->time_to_eat = ft_atoi(argv[3]); // in milliseconds
 	vars->time_to_sleep = ft_atoi(argv[4]); // in milliseconds
+	if (argv[5])
+		vars->num_meals = ft_atoi(argv[5]);
 	vars->num_philo = num_philo;
+	vars->all_full = 0;
 	vars->all_alive = 1;
 }
 
@@ -53,7 +56,7 @@ int	init_philos(t_vars *vars, int num_philo)
 		vars->philo[i].id = i + 1;
 		vars->philo[i].meals_eaten = 0;
 		vars->philo[i].time_of_death = time + (vars->time_to_die * 1000);
-		vars->philo[i].count_philo = num_philo;
+		vars->philo[i].count_philo = num_philo; // probably not needed
 		vars->philo[i].left_fork = &vars->forks[i];
 		if (i + 1 == num_philo)
 			vars->philo[i].right_fork = &vars->forks[0];

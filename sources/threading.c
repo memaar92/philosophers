@@ -6,19 +6,28 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 15:29:33 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/03 16:22:21 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/03 18:26:39 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	create_threads(pthread_t *checking, pthread_t *newthread, t_vars *vars)
+int	create_threads(pthread_t *checking, pthread_t *newthread, t_vars *vars, int argc)
 {
-	int	i;
+	int			i;
+	pthread_t	*checking2;
 
 	i = 0;
+	checking2 = malloc(sizeof(*checking2));
+	if (!checking2)
+		return (1);
 	if (pthread_create(checking, NULL, check_on_philos, vars))
 		return (1);
+	if (argc == 6)
+	{
+		if (pthread_create(checking2, NULL, check_philos_full, vars))
+			return (1);
+	}
 	vars->start_sim = calc_start_time();
 	while (i < vars->num_philo)
 	{
@@ -28,6 +37,31 @@ int	create_threads(pthread_t *checking, pthread_t *newthread, t_vars *vars)
 	}
 	return (0);
 }
+
+void	*check_philos_full(void *arg)
+{
+	t_vars	*vars;
+	int		i;
+	int		j;
+
+	vars = (t_vars *)arg;
+	j = 0;
+	while (!(vars->all_full))
+	{
+		i = 0;
+		while (i < vars->num_philo && vars->philo[i].meals_eaten >= vars->num_meals)
+			i++;
+		if (i == vars->num_philo)
+		{
+			vars->all_full = 1;
+			while (j < vars->num_philo)
+				pthread_mutex_unlock(&vars->forks[j++]);
+			return (NULL);
+		}
+	}
+	return (NULL);
+}
+
 
 void	*check_on_philos(void *arg)
 {
@@ -63,8 +97,10 @@ void	*philosopher_dines(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while (philo->vars->all_alive) // also stop if all philos have eaten at least x times (provided as argument)
+	while (philo->vars->all_alive && !(philo->vars->all_full)) // also stop if all philos have eaten at least x times (provided as argument)
 	{
+		if (philo->vars->num_philo % 2 != 0) // why is this needed? Alternative: half of eating time
+			ft_usleep(philo->vars->time_to_eat * 2 - philo->vars->time_to_sleep);
 		if (take_forks(philo))
 			return (NULL);
 		if (eat(philo))
@@ -73,7 +109,7 @@ void	*philosopher_dines(void *arg)
 		pthread_mutex_unlock(philo->left_fork);
 		if (ft_sleep(philo))
 			return (NULL);
-		if (!(philo->vars->all_alive))
+		if (!(philo->vars->all_alive) || philo->vars->all_full)
 			return (NULL);
 		printf("%ld: Philosopher %d is thinking\n", get_timestamp(philo), philo->id);
 	}

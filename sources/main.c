@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 16:58:54 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/03 15:30:44 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/03 18:33:19 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int argc, char **argv)
 	i = 0;
 	if (init_vars(&checking, &newthread, argv, &vars))
 		return (1);
-	if (create_threads(checking, newthread, vars))
+	if (create_threads(checking, newthread, vars, argc))
 		return (1);
 	while (i < vars->num_philo)
 	{
@@ -37,10 +37,9 @@ int	main(int argc, char **argv)
 
 /*
 TODOS:
-- solution does not work yet for uneven numbers. Might have to wait briefly when thinking or sleep the even ones for some microsec when entering the loop
-- implement 5th argument (number of meals eaten) --> probably checked together with wheather all philos are still alive
+- there are still issues with larger numbers of philos (e.g. 40 800 200 200  & 20 800 200 200); may wait in case of uneven philos at the beginning
+- number of meals eaten does not start at 0 --> problem?
 - mutex for ensuring that philo does not start eating and dies at the same time
-- split up code
 - check for data races
 - free mem and check for leaks
 */
