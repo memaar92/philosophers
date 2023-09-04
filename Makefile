@@ -6,7 +6,7 @@
 #    By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/26 11:54:25 by mamesser          #+#    #+#              #
-#    Updated: 2023/09/03 18:27:02 by mamesser         ###   ########.fr        #
+#    Updated: 2023/09/04 13:34:24 by mamesser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,11 @@ NAME = philo
 
 CFLAGS = -Wall -Wextra -Werror
 
+# DFLAGS = -fsanitize=thread -g
+
 SRCS_DIR = ./sources/
 
-SRCS = $(addprefix $(SRCS_DIR),main.c init_structs.c utils.c events.c timing.c threading.c)
+SRCS = $(addprefix $(SRCS_DIR),main.c init_structs.c utils.c events.c timing.c threading.c free_mem.c)
 
 OBJS := $(SRCS:$(SRCS_DIR)%.c=$(SRCS_DIR)%.o)
 

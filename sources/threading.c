@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 15:29:33 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/03 18:26:39 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/04 13:27:26 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,15 @@ int	create_threads(pthread_t *checking, pthread_t *newthread, t_vars *vars, int 
 	if (!checking2)
 		return (1);
 	if (pthread_create(checking, NULL, check_on_philos, vars))
-		return (1);
+		return (free(checking2), 1);
+	pthread_detach(*checking); // detach thread?
 	if (argc == 6)
 	{
 		if (pthread_create(checking2, NULL, check_philos_full, vars))
-			return (1);
+			return (free(checking2), 1);
+		pthread_detach(*checking2); // detach thread?
 	}
+	free(checking2);
 	vars->start_sim = calc_start_time();
 	while (i < vars->num_philo)
 	{
@@ -99,8 +102,8 @@ void	*philosopher_dines(void *arg)
 	philo = (t_philo *)arg;
 	while (philo->vars->all_alive && !(philo->vars->all_full)) // also stop if all philos have eaten at least x times (provided as argument)
 	{
-		if (philo->vars->num_philo % 2 != 0) // why is this needed? Alternative: half of eating time
-			ft_usleep(philo->vars->time_to_eat * 2 - philo->vars->time_to_sleep);
+		if (philo->id % 2 != 0)
+			ft_usleep(1);
 		if (take_forks(philo))
 			return (NULL);
 		if (eat(philo))

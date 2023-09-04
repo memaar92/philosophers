@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 13:12:59 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/03 18:26:01 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/04 13:28:16 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ long	get_timestamp(t_philo *philo);
 long	calc_start_time(void);
 int		ft_usleep(int wait);
 
-int		take_fork_even_philo(t_philo *philo, int left, int right);
-int		take_fork_uneven_philo(t_philo *philo, int left, int right);
+int		take_fork_even_philo(t_philo *philo);
+int		take_fork_uneven_philo(t_philo *philo);
 int		take_forks(t_philo *philo);
 int		eat(t_philo *philo);
 int		ft_sleep(t_philo *philo);
@@ -70,5 +70,7 @@ int		create_threads(pthread_t *checking, pthread_t *newthread, t_vars *vars, int
 void	*check_on_philos(void *arg);
 void	*check_philos_full(void *arg);
 void	*philosopher_dines(void *arg);
+
+void	free_mem(t_vars *vars, pthread_t *newthread, pthread_t *checking);
 
 #endif
