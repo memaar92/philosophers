@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 13:12:59 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/04 13:28:16 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/04 17:09:12 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_vars
 	long			start_sim;
 	t_philo			*philo;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	*alive;
 }				t_vars;
 
 int		ft_atoi(const char *str);

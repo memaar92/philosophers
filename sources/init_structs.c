@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:38:53 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/03 18:24:48 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/04 17:47:28 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_vars	*alloc_mem(int num_philo)
 	return (vars);
 }
 
-void	set_static_vars(t_vars *vars, char **argv, int num_philo)
+void	set_static_vars(t_vars *vars, char **argv, int num_philo) // ideally test for neg values
 {
 	vars->time_to_die = ft_atoi(argv[2]); // in milliseconds
 	vars->time_to_eat = ft_atoi(argv[3]); // in milliseconds
@@ -79,6 +79,8 @@ t_vars	*init_structs(char **argv, int num_philo) // add args for time to die/eat
 	set_static_vars(vars, argv, num_philo);
 	while (i < num_philo)
 		pthread_mutex_init(&vars->forks[i++], NULL);
+	// vars->alive = malloc(sizeof(*(vars->alive)));
+	// pthread_mutex_init(vars->alive, NULL);
 	init_philos(vars, num_philo);
 	return (vars);
 }

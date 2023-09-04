@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 15:29:33 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/04 13:27:26 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/04 17:47:15 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	*check_on_philos(void *arg)
 			if (vars->philo[i].time_of_death <= (tv.tv_sec * 1000000 + tv.tv_usec))
 			{
 				vars->all_alive = 0;
-				printf("%ld: Philosopher %d died\n", get_timestamp(vars->philo), vars->philo[i].id);
+				printf("%ld %d died\n", get_timestamp(vars->philo), vars->philo[i].id);
 				while (j < vars->num_philo)
 					pthread_mutex_unlock(&vars->forks[j++]);
 				return (NULL);
@@ -100,10 +100,15 @@ void	*philosopher_dines(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while (philo->vars->all_alive && !(philo->vars->all_full)) // also stop if all philos have eaten at least x times (provided as argument)
+	while (philo->vars->all_alive && !(philo->vars->all_full))
 	{
-		if (philo->id % 2 != 0)
-			ft_usleep(1);
+		if (!(philo->vars->all_alive) || philo->vars->all_full)
+			return (pthread_mutex_destroy(philo->vars->alive), NULL);
+		printf("%ld %d is thinking\n", get_timestamp(philo), philo->id);
+		// if (philo->id % 2 != 0)
+		// 	ft_usleep(1);
+		if (philo->id % 2 != 0 && philo->meals_eaten == 0)
+			ft_usleep(philo->vars->time_to_eat / 2);
 		if (take_forks(philo))
 			return (NULL);
 		if (eat(philo))
@@ -112,9 +117,6 @@ void	*philosopher_dines(void *arg)
 		pthread_mutex_unlock(philo->left_fork);
 		if (ft_sleep(philo))
 			return (NULL);
-		if (!(philo->vars->all_alive) || philo->vars->all_full)
-			return (NULL);
-		printf("%ld: Philosopher %d is thinking\n", get_timestamp(philo), philo->id);
 	}
 	return (NULL);
 }
