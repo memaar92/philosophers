@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:40:48 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/03 14:54:51 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/05 16:05:35 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,18 @@ int	ft_atoi(const char *str)
 	while (str[i] >= '0' && str[i] <= '9')
 		result = result * 10 + str[i++] - '0';
 	return (sign * result);
+}
+
+int	check_args(int argc, char **argv)
+{
+	if (ft_atoi(argv[1]) < 1)
+		return (printf("Error: Please specify at least 1 philosopher\n"), 1);
+	if (ft_atoi(argv[2]) < 0 || ft_atoi(argv[3]) < 0 || ft_atoi(argv[4]) < 0)
+		return (printf("Error: Args mustn't be negative\n"), 1);
+	if (argc == 6)
+	{
+		if (ft_atoi(argv[5]) < 0)
+			return (printf("Error: Args mustn't be negative\n"), 1);
+	}
+	return (0);
 }

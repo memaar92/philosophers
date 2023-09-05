@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:38:53 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/05 15:01:31 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/05 16:05:06 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,8 @@ int	set_static_vars(t_vars *vars, char **argv, int num_philo)
 	vars->time_to_die = ft_atoi(argv[2]);
 	vars->time_to_eat = ft_atoi(argv[3]);
 	vars->time_to_sleep = ft_atoi(argv[4]);
-	if (vars->time_to_die < 0 || vars->time_to_eat < 0 
-		|| vars->time_to_sleep < 0)
-		return (printf("Error: Args mustn't be negative\n"), 1);
 	if (argv[5])
-	{
 		vars->num_meals = ft_atoi(argv[5]);
-		if (vars->num_meals < 0)
-			return (printf("Error: Args mustn't be negative\n"), 1);
-	}
 	else
 		vars->num_meals = -1;
 	vars->num_philo = num_philo;
@@ -102,8 +95,6 @@ int	init_vars(pthread_t **checking, pthread_t **newt, char **av, t_vars **vars)
 	int	num_philo;
 
 	num_philo = ft_atoi(av[1]);
-	if (num_philo < 1)
-		return (printf("Error: Please specify at least 1 philosopher\n"), 1);
 	*checking = malloc(sizeof(**checking));
 	if (!(*checking))
 		return (1);

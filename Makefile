@@ -6,7 +6,7 @@
 #    By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/26 11:54:25 by mamesser          #+#    #+#              #
-#    Updated: 2023/09/05 14:35:01 by mamesser         ###   ########.fr        #
+#    Updated: 2023/09/05 15:42:35 by mamesser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,14 +22,14 @@ SRCS = $(addprefix $(SRCS_DIR),main.c init_structs.c utils.c events.c events2.c 
 
 OBJS := $(SRCS:$(SRCS_DIR)%.c=$(SRCS_DIR)%.o)
 
-# HEADERS = push_swap.h
+HEADERS = ./includes/philo.h
 
 .PHONY: clean fclean re all
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	cc -g $(OBJS) -o $@
+	cc $(OBJS) -o $@
 
 $(SRCS_DIR)%.o: $(SRCS_DIR)%.c $(HEADERS)
 	cc $(CFLAGS) -I. -c $< -o $@

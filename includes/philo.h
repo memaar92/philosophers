@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 13:12:59 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/05 15:13:18 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/05 16:00:38 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_vars
 }				t_vars;
 
 int		ft_atoi(const char *str);
+int		check_args(int argc, char **argv);
 
 long	get_timestamp(t_philo *philo);
 long	calc_start_time(void);
