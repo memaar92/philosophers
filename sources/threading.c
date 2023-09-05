@@ -6,31 +6,20 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 15:29:33 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/05 11:54:50 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/05 13:49:27 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	create_threads(pthread_t *checking, pthread_t *newthread, t_vars *vars, int argc)
+int	create_threads(pthread_t *checking, pthread_t *newthread, t_vars *vars)
 {
-	int			i;
-	pthread_t	*checking2;
+	int	i;
 
 	i = 0;
-	checking2 = malloc(sizeof(*checking2));
-	if (!checking2)
-		return (1);
 	if (pthread_create(checking, NULL, check_on_philos, vars))
-		return (free(checking2), 1);
+		return (1);
 	pthread_detach(*checking); // detach thread?
-	if (argc == 6)
-	{
-		if (pthread_create(checking2, NULL, check_philos_full, vars))
-			return (free(checking2), 1);
-		pthread_detach(*checking2); // detach thread?
-	}
-	free(checking2);
 	vars->start_sim = calc_start_time();
 	while (i < vars->num_philo)
 	{
@@ -52,9 +41,10 @@ void	*check_philos_full(void *arg)
 	while (!(vars->all_full))
 	{
 		i = 0;
+		pthread_mutex_lock(vars->alive);
 		while (i < vars->num_philo && vars->philo[i].meals_eaten >= vars->num_meals)
 			i++;
-		pthread_mutex_lock(vars->alive); // does not seem to make a difference to putting it before the while loop
+		// pthread_mutex_lock(vars->alive); // does not seem to make a difference to putting it before the while loop
 		if (i == vars->num_philo)
 		{
 			vars->all_full = 1;
@@ -88,7 +78,8 @@ void	*check_on_philos(void *arg)
 			if (vars->philo[i].time_of_death <= (tv.tv_sec * 1000000 + tv.tv_usec))
 			{
 				vars->all_alive = 0;
-				printf("%ld %d died\n", get_timestamp(vars->philo), vars->philo[i].id);
+				if (vars->all_full == 0)
+					printf("%ld %d died\n", get_timestamp(vars->philo), vars->philo[i].id);
 				while (j < vars->num_philo)
 					pthread_mutex_unlock(&vars->forks[j++]);
 				pthread_mutex_unlock(vars->alive);
@@ -107,6 +98,8 @@ void	*philosopher_dines(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	if (philo->id % 2 != 0)
+		ft_usleep(philo->vars->time_to_eat / 2);
 	while (philo->vars->all_alive && !(philo->vars->all_full))
 	{
 		pthread_mutex_lock(philo->vars->alive);
@@ -114,8 +107,8 @@ void	*philosopher_dines(void *arg)
 			return (pthread_mutex_unlock(philo->vars->alive), NULL);
 		printf("%ld %d is thinking\n", get_timestamp(philo), philo->id);
 		pthread_mutex_unlock(philo->vars->alive);
-		if (philo->id % 2 != 0 && philo->meals_eaten == 0)
-			ft_usleep(philo->vars->time_to_eat / 2);
+		// if (philo->id % 2 != 0 && philo->meals_eaten == 0)
+		// 	ft_usleep(philo->vars->time_to_eat / 2);
 		if (take_forks(philo))
 			return (pthread_mutex_unlock(philo->vars->alive), NULL);
 		if (eat(philo))

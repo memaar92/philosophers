@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 16:58:54 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/05 12:21:50 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/05 13:46:20 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int argc, char **argv)
 	i = 0;
 	if (init_vars(&checking, &newthread, argv, &vars))
 		return (free_mem(vars, newthread, checking), 1);
-	if (create_threads(checking, newthread, vars, argc))
+	if (create_threads(checking, newthread, vars))
 		return (free_mem(vars, newthread, checking), 1);
 	while (i < vars->num_philo)
 	{

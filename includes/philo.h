@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 13:12:59 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/05 11:42:32 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/05 13:45:59 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int		init_philos(t_vars *vars, int num_philo);
 void	set_static_vars(t_vars *vars, char **argv, int num_philo);
 t_vars	*alloc_mem(int num_philo);
 
-int		create_threads(pthread_t *checking, pthread_t *newthread, t_vars *vars, int argc);
+int		create_threads(pthread_t *checking, pthread_t *newthread, t_vars *vars);
 void	*check_on_philos(void *arg);
 void	*check_philos_full(void *arg);
 void	*philosopher_dines(void *arg);
