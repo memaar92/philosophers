@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 13:12:59 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/05 13:45:59 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/05 14:37:30 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ typedef struct s_philo
 	int				id;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
-	int				count_philo;
 	long			time_of_death;
 	int				meals_eaten;
 	t_vars			*vars;
@@ -57,6 +56,8 @@ int		ft_usleep(int wait);
 int		take_fork_even_philo(t_philo *philo);
 int		take_fork_uneven_philo(t_philo *philo);
 int		take_forks(t_philo *philo);
+
+int		increment_num_meals(t_philo *philo);
 int		eat(t_philo *philo);
 int		ft_sleep(t_philo *philo);
 
@@ -64,7 +65,7 @@ int		init_vars(pthread_t **checking, pthread_t **newthread,
 			char **argv, t_vars **vars);
 t_vars	*init_structs(char **argv, int num_philo);
 int		init_philos(t_vars *vars, int num_philo);
-void	set_static_vars(t_vars *vars, char **argv, int num_philo);
+int		set_static_vars(t_vars *vars, char **argv, int num_philo);
 t_vars	*alloc_mem(int num_philo);
 
 int		create_threads(pthread_t *checking, pthread_t *newthread, t_vars *vars);

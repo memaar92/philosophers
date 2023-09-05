@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:38:53 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/05 13:41:08 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/05 14:55:51 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,25 @@ t_vars	*alloc_mem(int num_philo)
 	return (vars);
 }
 
-void	set_static_vars(t_vars *vars, char **argv, int num_philo) // ideally test for neg values
+int	set_static_vars(t_vars *vars, char **argv, int num_philo)
 {
 	vars->time_to_die = ft_atoi(argv[2]); // in milliseconds
 	vars->time_to_eat = ft_atoi(argv[3]); // in milliseconds
-	vars->time_to_sleep = ft_atoi(argv[4]); // in milliseconds
+	vars->time_to_sleep = ft_atoi(argv[4]);  // in milliseconds
+	if (vars->time_to_die < 0 || vars->time_to_eat < 0 || vars->time_to_sleep < 0)
+		return (printf("Error: Args mustn't be negative\n"), 1);
 	if (argv[5])
+	{
 		vars->num_meals = ft_atoi(argv[5]);
+		if (vars->num_meals < 0)
+			return (printf("Error: Args mustn't be negative\n"), 1);
+	}
 	else
 		vars->num_meals = -1;
 	vars->num_philo = num_philo;
 	vars->all_full = 0;
 	vars->all_alive = 1;
+	return (0);
 }
 
 int	init_philos(t_vars *vars, int num_philo)
@@ -61,7 +68,6 @@ int	init_philos(t_vars *vars, int num_philo)
 		vars->philo[i].id = i + 1;
 		vars->philo[i].meals_eaten = 0;
 		vars->philo[i].time_of_death = time + (vars->time_to_die * 1000);
-		vars->philo[i].count_philo = num_philo; // probably not needed
 		vars->philo[i].left_fork = &vars->forks[i];
 		if (i + 1 == num_philo)
 			vars->philo[i].right_fork = &vars->forks[0];
@@ -81,7 +87,8 @@ t_vars	*init_structs(char **argv, int num_philo) // add args for time to die/eat
 	vars = alloc_mem(num_philo);
 	if (!vars)
 		return (NULL);
-	set_static_vars(vars, argv, num_philo);
+	if (set_static_vars(vars, argv, num_philo))
+		return (NULL);
 	while (i < num_philo)
 		pthread_mutex_init(&vars->forks[i++], NULL);
 	pthread_mutex_init(vars->alive, NULL);
@@ -94,6 +101,8 @@ int	init_vars(pthread_t **checking, pthread_t **newthread, char **argv, t_vars *
 	int	num_philo;
 
 	num_philo = ft_atoi(argv[1]);
+	if (num_philo < 1)
+		return (printf("Error: Please specify at least 1 philosopher\n"), 1);
 	*checking = malloc(sizeof(**checking));
 	if (!(*checking))
 		return (1);
