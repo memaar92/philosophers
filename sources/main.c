@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 16:58:54 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/04 17:47:23 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/05 10:46:50 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	main(int argc, char **argv)
 		pthread_mutex_destroy(&(vars->forks[i])); // only destroys unlocked mutexes
 		i++;
 	}
+	pthread_mutex_destroy(vars->alive);
 	free_mem(vars, newthread, checking);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 15:29:33 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/04 17:47:15 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/05 10:56:20 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	*check_on_philos(void *arg)
 		i = 0;
 		while (i < vars->num_philo)
 		{
+			pthread_mutex_lock(vars->alive);
 			gettimeofday(&tv, NULL);
 			if (vars->philo[i].time_of_death <= (tv.tv_sec * 1000000 + tv.tv_usec))
 			{
@@ -87,8 +88,11 @@ void	*check_on_philos(void *arg)
 				printf("%ld %d died\n", get_timestamp(vars->philo), vars->philo[i].id);
 				while (j < vars->num_philo)
 					pthread_mutex_unlock(&vars->forks[j++]);
+				pthread_mutex_unlock(vars->alive);
 				return (NULL);
 			}
+			pthread_mutex_unlock(vars->alive);
+			ft_usleep(1);
 			i++;
 		}
 	}
@@ -102,21 +106,23 @@ void	*philosopher_dines(void *arg)
 	philo = (t_philo *)arg;
 	while (philo->vars->all_alive && !(philo->vars->all_full))
 	{
+		pthread_mutex_lock(philo->vars->alive);
 		if (!(philo->vars->all_alive) || philo->vars->all_full)
-			return (pthread_mutex_destroy(philo->vars->alive), NULL);
+			return (pthread_mutex_unlock(philo->vars->alive), NULL);
 		printf("%ld %d is thinking\n", get_timestamp(philo), philo->id);
-		// if (philo->id % 2 != 0)
-		// 	ft_usleep(1);
+		pthread_mutex_unlock(philo->vars->alive);
+		// if (philo->id % 2 == 0)
+		// 	ft_usleep(philo->vars->time_to_eat / 2);
 		if (philo->id % 2 != 0 && philo->meals_eaten == 0)
 			ft_usleep(philo->vars->time_to_eat / 2);
 		if (take_forks(philo))
-			return (NULL);
+			return (pthread_mutex_unlock(philo->vars->alive), NULL);
 		if (eat(philo))
-			return (NULL);
+			return (pthread_mutex_unlock(philo->vars->alive), NULL);
 		pthread_mutex_unlock(philo->right_fork);
 		pthread_mutex_unlock(philo->left_fork);
 		if (ft_sleep(philo))
-			return (NULL);
+			return (pthread_mutex_unlock(philo->vars->alive), NULL);
 	}
 	return (NULL);
 }
