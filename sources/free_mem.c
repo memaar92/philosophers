@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 13:11:49 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/04 13:30:47 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/05 11:39:01 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	free_mem(t_vars *vars, pthread_t *newthread, pthread_t *checking)
 		free(vars->forks);
 	if (vars && vars->philo)
 		free(vars->philo);
+	if (vars && vars->alive)
+		free(vars->alive);
 	if (vars)
 		free(vars);
 	if (newthread)

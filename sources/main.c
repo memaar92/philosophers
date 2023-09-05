@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 16:58:54 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/05 10:46:50 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/05 12:21:50 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,6 @@ TODOS:
 - there are still issues with larger numbers of philos (e.g. 40 800 200 200  & 20 800 200 200); may wait in case of uneven philos at the beginning
 - mutex for ensuring that philo does not start eating and dies at the same time
 - check with helgrind
-- protecting all alive and all full with mutexes?
+- return err statement in case of negative value
 */
 
