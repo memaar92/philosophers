@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 13:12:59 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/05 14:37:30 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/05 15:13:18 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_vars	*alloc_mem(int num_philo);
 
 int		create_threads(pthread_t *checking, pthread_t *newthread, t_vars *vars);
 void	*check_on_philos(void *arg);
-void	*check_philos_full(void *arg);
+int		check_death(struct timeval tv, t_vars *vars, int i);
 void	*philosopher_dines(void *arg);
 
 void	free_mem(t_vars *vars, pthread_t *newthread, pthread_t *checking);

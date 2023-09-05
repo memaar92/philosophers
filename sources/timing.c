@@ -6,13 +6,13 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 14:53:29 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/03 16:23:02 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/05 15:03:28 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-long	get_timestamp(t_philo *philo) // 1000 microsec are 1 millisec
+long	get_timestamp(t_philo *philo)
 {
 	struct timeval	tv;
 	long			time;
