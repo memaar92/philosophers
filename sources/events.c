@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 14:56:57 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/06 16:13:21 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/06 16:23:27 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int	eat(t_philo *philo)
 	philo->time_of_death = (tv.tv_sec * 1000000 + tv.tv_usec 
 			+ (philo->vars->time_to_die * 1000));
 	pthread_mutex_unlock(philo->vars->alive);
-	ft_usleep(philo->vars->time_to_eat);
 	pthread_mutex_lock(philo->vars->alive);
 	if (philo->vars->num_meals != -1)
 	{
@@ -68,6 +67,7 @@ int	eat(t_philo *philo)
 			return (pthread_mutex_unlock(philo->vars->alive), 1);
 	}
 	pthread_mutex_unlock(philo->vars->alive);
+	ft_usleep(philo->vars->time_to_eat);
 	return (0);
 }
 

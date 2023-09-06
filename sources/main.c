@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 16:58:54 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/06 16:05:34 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/06 16:58:13 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ int	main(int argc, char **argv)
 	if (create_threads(checking, newthread, vars))
 		return (free_mem(vars, newthread, checking), 1);
 	while (i < vars->num_philo)
-	{
+	{	
 		if (pthread_join(newthread[i], NULL))
 			return (free_mem(vars, newthread, checking), 1);
-		pthread_mutex_destroy(&(vars->forks[i])); // only destroys unlocked mutexes
+		pthread_mutex_destroy(&(vars->forks[i]));
 		i++;
 	}
 	pthread_mutex_destroy(vars->alive);
@@ -48,5 +48,6 @@ TODOS:
 - more advanced error checking, e.g. ensure that args are numbers/ints etc.?
 	// if (philo->id % 2 != 0)
 	// 	ft_usleep(philo->vars->time_to_eat / 2);
+- Error handling of non-digits and non-ints
 */
 
