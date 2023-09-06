@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 15:29:33 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/06 15:29:16 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/06 16:13:28 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,20 +80,18 @@ void	*philosopher_dines(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	// if (philo->id % 2 != 0)
-	// 	ft_usleep(philo->vars->time_to_eat / 2);
 	while (1)
 	{
 		if (print_msg("is thinking", philo))
-			return (pthread_mutex_unlock(philo->vars->alive), NULL);
+			return (NULL);
 		if (take_forks(philo))
-			return (pthread_mutex_unlock(philo->vars->alive), NULL);
+			return (NULL);
 		if (eat(philo))
-			return (pthread_mutex_unlock(philo->vars->alive), NULL);
+			return (NULL);
 		pthread_mutex_unlock(philo->right_fork);
 		pthread_mutex_unlock(philo->left_fork);
 		if (ft_sleep(philo))
-			return (pthread_mutex_unlock(philo->vars->alive), NULL);
+			return (NULL);
 	}
 	return (NULL);
 }

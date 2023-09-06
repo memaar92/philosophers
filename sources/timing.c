@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 14:53:29 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/06 15:03:11 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/06 16:05:00 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_usleep(int wait)
 {
 	long	start;
-	
+
 	start = get_time();
 	while (get_time() < start + wait)
 		usleep(50);

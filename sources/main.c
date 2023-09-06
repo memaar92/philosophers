@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 16:58:54 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/06 13:12:47 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/06 16:05:34 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,12 @@ int	main(int argc, char **argv)
 
 /*
 TODOS:
-- there are still issues with larger numbers of philos (200)
 - check with helgrind?
 - do I need to allocate for pthread_mutex_t alive?
 - more extreme cases: 200 260 100 100
 - should something still be printed after a philo has started his last meal?
-- The bottle neck on my philosophers was system calls (within printf). You could create another thread which prints all messages every millisecond or so to work around this
-- seperate terminal session?
-- Atomic operations?
-- set while loop to 1 
-- more advanced error checking, e.g. ensure that args are numbers/ints etc.
+- more advanced error checking, e.g. ensure that args are numbers/ints etc.?
+	// if (philo->id % 2 != 0)
+	// 	ft_usleep(philo->vars->time_to_eat / 2);
 */
 
