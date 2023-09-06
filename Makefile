@@ -6,7 +6,7 @@
 #    By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/26 11:54:25 by mamesser          #+#    #+#              #
-#    Updated: 2023/09/05 15:42:35 by mamesser         ###   ########.fr        #
+#    Updated: 2023/09/06 13:55:19 by mamesser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 SRCS_DIR = ./sources/
 
-SRCS = $(addprefix $(SRCS_DIR),main.c init_structs.c utils.c events.c events2.c timing.c threading.c free_mem.c)
+SRCS = $(addprefix $(SRCS_DIR),main.c init_structs.c utils.c events.c timing.c threading.c free_mem.c)
 
 OBJS := $(SRCS:$(SRCS_DIR)%.c=$(SRCS_DIR)%.o)
 

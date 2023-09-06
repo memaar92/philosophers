@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 16:58:54 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/05 18:20:30 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/06 13:12:47 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,6 @@ TODOS:
 - seperate terminal session?
 - Atomic operations?
 - set while loop to 1 
+- more advanced error checking, e.g. ensure that args are numbers/ints etc.
 */
 

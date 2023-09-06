@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 13:12:59 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/05 16:00:38 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/06 15:27:54 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ typedef struct s_vars
 
 int		ft_atoi(const char *str);
 int		check_args(int argc, char **argv);
+int		print_msg(char *str, t_philo *philo);
 
-long	get_timestamp(t_philo *philo);
-long	calc_start_time(void);
+long	get_time(void);
 int		ft_usleep(int wait);
 
 int		take_fork_even_philo(t_philo *philo);
@@ -71,9 +71,12 @@ t_vars	*alloc_mem(int num_philo);
 
 int		create_threads(pthread_t *checking, pthread_t *newthread, t_vars *vars);
 void	*check_on_philos(void *arg);
-int		check_death(struct timeval tv, t_vars *vars, int i);
+int		check_death(t_vars *vars, int i);
 void	*philosopher_dines(void *arg);
 
 void	free_mem(t_vars *vars, pthread_t *newthread, pthread_t *checking);
+
+void	ft_usleep2(int time);
+
 
 #endif

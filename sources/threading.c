@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 15:29:33 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/05 15:14:25 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/06 15:29:16 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,33 @@ int	create_threads(pthread_t *checking, pthread_t *newt, t_vars *vars)
 	int	i;
 
 	i = 0;
-	if (pthread_create(checking, NULL, check_on_philos, vars))
+	if (pthread_create(checking, NULL, &check_on_philos, vars))
 		return (1);
 	pthread_detach(*checking);
-	vars->start_sim = calc_start_time();
+	vars->start_sim = get_time();
 	while (i < vars->num_philo)
 	{
-		if (pthread_create(&newt[i], NULL, philosopher_dines, &vars->philo[i]))
+		if (pthread_create(&newt[i], NULL, &philosopher_dines, &vars->philo[i]))
 			return (1);
 		i++;
 	}
 	return (0);
 }
 
-int	check_death(struct timeval tv, t_vars *vars, int i)
+int	check_death(t_vars *vars, int i)
 {
-	int	j;
+	int				j;
+	struct timeval	tv;
 
 	j = 0;
+	gettimeofday(&tv, NULL);
 	if (vars->philo[i].time_of_death <= (tv.tv_sec * 1000000 + tv.tv_usec))
 	{
 		vars->all_alive = 0;
 		if (vars->all_full == 0)
 		{
 			printf("%ld %d died\n", 
-				get_timestamp(vars->philo), vars->philo[i].id);
+				get_time() - vars->start_sim, vars->philo[i].id);
 		}
 		while (j < vars->num_philo)
 			pthread_mutex_unlock(&vars->forks[j++]);
@@ -54,20 +56,16 @@ int	check_death(struct timeval tv, t_vars *vars, int i)
 void	*check_on_philos(void *arg)
 {
 	t_vars			*vars;
-	struct timeval	tv;
 	int				i;
-	int				j;
 
 	vars = (t_vars *)arg;
-	j = 0;
 	while (vars->all_alive)
 	{
 		i = 0;
 		while (i < vars->num_philo)
 		{
 			pthread_mutex_lock(vars->alive);
-			gettimeofday(&tv, NULL);
-			if (check_death(tv, vars, i))
+			if (check_death(vars, i))
 				return (NULL);
 			pthread_mutex_unlock(vars->alive);
 			ft_usleep(5);
@@ -82,15 +80,12 @@ void	*philosopher_dines(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	if (philo->id % 2 != 0)
-		ft_usleep(philo->vars->time_to_eat / 2);
-	while (philo->vars->all_alive && !(philo->vars->all_full))
+	// if (philo->id % 2 != 0)
+	// 	ft_usleep(philo->vars->time_to_eat / 2);
+	while (1)
 	{
-		pthread_mutex_lock(philo->vars->alive);
-		if (!(philo->vars->all_alive) || philo->vars->all_full)
+		if (print_msg("is thinking", philo))
 			return (pthread_mutex_unlock(philo->vars->alive), NULL);
-		printf("%ld %d is thinking\n", get_timestamp(philo), philo->id);
-		pthread_mutex_unlock(philo->vars->alive);
 		if (take_forks(philo))
 			return (pthread_mutex_unlock(philo->vars->alive), NULL);
 		if (eat(philo))

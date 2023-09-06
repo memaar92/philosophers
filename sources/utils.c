@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:40:48 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/05 16:05:35 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/06 15:02:58 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,15 @@ int	check_args(int argc, char **argv)
 		if (ft_atoi(argv[5]) < 0)
 			return (printf("Error: Args mustn't be negative\n"), 1);
 	}
+	return (0);
+}
+
+int	print_msg(char *str, t_philo *philo)
+{
+	pthread_mutex_lock(philo->vars->alive);
+	if (!(philo->vars->all_alive) || philo->vars->all_full)
+		return (1);
+	printf("%ld %d %s\n", get_time() - philo->vars->start_sim, philo->id, str);
+	pthread_mutex_unlock(philo->vars->alive);
 	return (0);
 }
