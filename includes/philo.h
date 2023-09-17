@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 13:12:59 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/17 14:36:46 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/17 15:15:16 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ typedef struct s_philo
 
 typedef struct s_vars
 {
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
+	long			time_to_die;
+	long			time_to_eat;
+	long			time_to_sleep;
 	int				num_philo;
 	int				all_alive;
 	int				all_full;
@@ -72,5 +72,9 @@ int		check_death(t_vars *vars, int i);
 void	*philosopher_dines(void *arg);
 
 void	free_mem(t_vars *vars, pthread_t *newthread, pthread_t *checking);
+
+int		ft_strlen(const char *s);
+int		num_len(int i);
+int		check_size(char **argv);
 
 #endif

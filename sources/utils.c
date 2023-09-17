@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:40:48 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/17 11:06:31 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/17 15:13:40 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ static int	ft_isnotdigit(char *str)
 
 int	check_args(int argc, char **argv)
 {
+	if (check_size(argv))
+		return (printf("Error: Only positive integers are allowed\n"), 1);
 	if (ft_atoi(argv[1]) < 1)
 		return (printf("Error: Please specify at least 1 philosopher\n"), 1);
 	if (ft_atoi(argv[2]) < 0 || ft_atoi(argv[3]) < 0 || ft_atoi(argv[4]) < 0)
@@ -68,6 +70,9 @@ int	check_args(int argc, char **argv)
 		return (printf("Error: Please provide only digits\n"), 1);
 	if (argc == 6)
 	{
+		if (ft_strlen(argv[5]) > 10
+			|| ft_strlen(argv[5]) != num_len(ft_atoi(argv[5])))
+			return (printf("Error: Only positive integers are allowed\n"), 1);
 		if (ft_atoi(argv[5]) < 0)
 			return (printf("Error: Args mustn't be negative\n"), 1);
 		if (ft_isnotdigit(argv[5]))
