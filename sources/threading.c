@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 15:29:33 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/06 16:47:46 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/17 12:13:36 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	check_death(t_vars *vars, int i)
 
 	j = 0;
 	gettimeofday(&tv, NULL);
+	pthread_mutex_lock(vars->alive);
 	if (vars->philo[i].time_of_death <= (tv.tv_sec * 1000000 + tv.tv_usec))
 	{
 		vars->all_alive = 0;
@@ -50,6 +51,7 @@ int	check_death(t_vars *vars, int i)
 		pthread_mutex_unlock(vars->alive);
 		return (1);
 	}
+	pthread_mutex_unlock(vars->alive);
 	return (0);
 }
 
@@ -64,11 +66,9 @@ void	*check_on_philos(void *arg)
 		i = 0;
 		while (i < vars->num_philo)
 		{
-			pthread_mutex_lock(vars->alive);
+			ft_usleep(5);
 			if (check_death(vars, i))
 				return (NULL);
-			pthread_mutex_unlock(vars->alive);
-			ft_usleep(5);
 			i++;
 		}
 	}
@@ -80,10 +80,14 @@ void	*philosopher_dines(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	if (philo->id % 2 == 0)
+			ft_usleep(philo->vars->time_to_eat / 2);
 	while (1)
 	{
 		if (print_msg("is thinking", philo))
 			return (NULL);
+		// if (philo->id % 2 == 0)
+		// 	usleep(50);
 		if (take_forks(philo))
 			return (NULL);
 		if (eat(philo))

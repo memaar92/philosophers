@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 14:40:48 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/06 17:27:00 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/17 11:06:31 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,19 +59,19 @@ static int	ft_isnotdigit(char *str)
 
 int	check_args(int argc, char **argv)
 {
-	if (ft_isnotdigit(argv[1]) || ft_isnotdigit(argv[2])
-		|| ft_isnotdigit(argv[3]) || ft_isnotdigit(argv[4]))
-		return (printf("Error: Please provide only digits\n"), 1);
 	if (ft_atoi(argv[1]) < 1)
 		return (printf("Error: Please specify at least 1 philosopher\n"), 1);
 	if (ft_atoi(argv[2]) < 0 || ft_atoi(argv[3]) < 0 || ft_atoi(argv[4]) < 0)
 		return (printf("Error: Args mustn't be negative\n"), 1);
+	if (ft_isnotdigit(argv[1]) || ft_isnotdigit(argv[2])
+		|| ft_isnotdigit(argv[3]) || ft_isnotdigit(argv[4]))
+		return (printf("Error: Please provide only digits\n"), 1);
 	if (argc == 6)
 	{
-		if (ft_isnotdigit(argv[5]))
-			return (printf("Error: Please provide digits\n"), 1);
 		if (ft_atoi(argv[5]) < 0)
 			return (printf("Error: Args mustn't be negative\n"), 1);
+		if (ft_isnotdigit(argv[5]))
+			return (printf("Error: Please provide digits\n"), 1);
 	}
 	return (0);
 }

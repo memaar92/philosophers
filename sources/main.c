@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 16:58:54 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/06 17:32:08 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/17 12:28:03 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,5 @@ TODOS:
 	// if (philo->id % 2 != 0)
 	// 	ft_usleep(philo->vars->time_to_eat / 2);
 - Error handling with very large numbers? e.g. maxint?
+- case 5 800 200 200 7 not fully working
 */
