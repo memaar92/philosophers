@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 14:56:57 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/06 16:23:27 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/17 14:37:07 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	increment_num_meals(t_philo *philo)
 
 	i = 0;
 	philo->meals_eaten++;
-	while (i < philo->vars->num_philo 
+	while (i < philo->vars->num_philo
 		&& philo->vars->philo[i].meals_eaten >= philo->vars->num_meals)
 		i++;
 	if (i == philo->vars->num_philo)
@@ -57,7 +57,7 @@ int	eat(t_philo *philo)
 		return (1);
 	pthread_mutex_lock(philo->vars->alive);
 	gettimeofday(&tv, NULL);
-	philo->time_of_death = (tv.tv_sec * 1000000 + tv.tv_usec 
+	philo->time_of_death = (tv.tv_sec * 1000000 + tv.tv_usec
 			+ (philo->vars->time_to_die * 1000));
 	pthread_mutex_unlock(philo->vars->alive);
 	pthread_mutex_lock(philo->vars->alive);

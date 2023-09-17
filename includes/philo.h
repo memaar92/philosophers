@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 13:12:59 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/06 16:01:35 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/17 14:36:46 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int		increment_num_meals(t_philo *philo);
 int		eat(t_philo *philo);
 int		ft_sleep(t_philo *philo);
 
-int		init_vars(pthread_t **checking, pthread_t **newthread, 
+int		init_vars(pthread_t **checking, pthread_t **newthread,
 			char **argv, t_vars **vars);
 t_vars	*init_structs(char **argv, int num_philo);
 int		init_philos(t_vars *vars, int num_philo);
