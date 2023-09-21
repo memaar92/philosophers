@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 14:56:57 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/17 14:37:07 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/21 10:40:16 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,22 @@ int	take_forks(t_philo *philo)
 	else
 		pthread_mutex_lock(philo->left_fork);
 	if (print_msg("has taken a fork", philo))
-		return (1);
+	{
+		if (philo->id % 2 == 0)
+			return (pthread_mutex_unlock(philo->right_fork), 1);
+		else
+			return (pthread_mutex_unlock(philo->left_fork), 1);
+	}
 	if (philo->id % 2 == 0)
 		pthread_mutex_lock(philo->left_fork);
 	else
 		pthread_mutex_lock(philo->right_fork);
 	if (print_msg("has taken a fork", philo))
+	{
+		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
 		return (1);
+	}
 	return (0);
 }
 
@@ -41,9 +50,6 @@ int	increment_num_meals(t_philo *philo)
 	if (i == philo->vars->num_philo)
 	{
 		philo->vars->all_full = 1;
-		i = 0;
-		while (i < philo->vars->num_philo)
-			pthread_mutex_unlock(&philo->vars->forks[i++]);
 		return (1);
 	}
 	return (0);
@@ -54,7 +60,11 @@ int	eat(t_philo *philo)
 	struct timeval	tv;
 
 	if (print_msg("is eating", philo))
+	{
+		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
 		return (1);
+	}
 	pthread_mutex_lock(philo->vars->alive);
 	gettimeofday(&tv, NULL);
 	philo->time_of_death = (tv.tv_sec * 1000000 + tv.tv_usec
@@ -64,7 +74,11 @@ int	eat(t_philo *philo)
 	if (philo->vars->num_meals != -1)
 	{
 		if (increment_num_meals(philo))
+		{
+			pthread_mutex_unlock(philo->right_fork);
+			pthread_mutex_unlock(philo->left_fork);
 			return (pthread_mutex_unlock(philo->vars->alive), 1);
+		}
 	}
 	pthread_mutex_unlock(philo->vars->alive);
 	ft_usleep(philo->vars->time_to_eat);

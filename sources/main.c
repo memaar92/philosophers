@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 16:58:54 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/17 15:12:40 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/21 10:41:02 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,11 @@ int	main(int argc, char **argv)
 	{
 		if (pthread_join(newthread[i], NULL))
 			return (free_mem(vars, newthread, checking), 1);
-		pthread_mutex_destroy(&(vars->forks[i]));
 		i++;
 	}
+	i = 0;
+	while (i < vars->num_philo)
+		pthread_mutex_destroy(&(vars->forks[i++]));
 	pthread_mutex_destroy(vars->alive);
 	free_mem(vars, newthread, checking);
 }

@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:38:53 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/17 15:06:11 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/21 10:40:47 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,13 @@ int	set_static_vars(t_vars *vars, char **argv, int num_philo)
 int	init_philos(t_vars *vars, int num_philo)
 {
 	int				i;
-	struct timeval	tv;
-	long			time;
 
 	i = 0;
-	gettimeofday(&tv, NULL);
-	time = tv.tv_sec * 1000000 + tv.tv_usec;
 	while (i < num_philo)
 	{
 		vars->philo[i].vars = vars;
 		vars->philo[i].id = i + 1;
 		vars->philo[i].meals_eaten = 0;
-		vars->philo[i].time_of_death = time + (vars->time_to_die * 1000);
 		vars->philo[i].left_fork = &vars->forks[i];
 		if (i + 1 == num_philo)
 			vars->philo[i].right_fork = &vars->forks[0];

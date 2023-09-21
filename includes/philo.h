@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 13:12:59 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/17 15:15:16 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/21 10:39:22 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_vars
 	int				all_alive;
 	int				all_full;
 	int				num_meals;
+	pthread_mutex_t	flag;
 	long			start_sim;
 	t_philo			*philo;
 	pthread_mutex_t	*forks;
@@ -69,6 +70,7 @@ t_vars	*alloc_mem(int num_philo);
 int		create_threads(pthread_t *checking, pthread_t *newthread, t_vars *vars);
 void	*check_on_philos(void *arg);
 int		check_death(t_vars *vars, int i);
+void	init_time_of_death(t_philo *philo);
 void	*philosopher_dines(void *arg);
 
 void	free_mem(t_vars *vars, pthread_t *newthread, pthread_t *checking);

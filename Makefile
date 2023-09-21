@@ -6,15 +6,15 @@
 #    By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/26 11:54:25 by mamesser          #+#    #+#              #
-#    Updated: 2023/09/17 15:14:54 by mamesser         ###   ########.fr        #
+#    Updated: 2023/09/21 10:42:16 by mamesser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -pthread
 
-# DFLAGS = -fsanitize=thread -g
+DFLAGS = -fsanitize=thread -g
 
 SRCS_DIR = ./sources/
 
@@ -29,12 +29,10 @@ HEADERS = ./includes/philo.h
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	cc $(OBJS) -o $@
+	cc $(CFLAGS) $(OBJS) -o $@
 
 $(SRCS_DIR)%.o: $(SRCS_DIR)%.c $(HEADERS)
 	cc $(CFLAGS) -I. -c $< -o $@
-
-bonus: all
 
 clean:
 	rm -f $(OBJS) 

@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 15:29:33 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/17 15:08:48 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/21 10:41:19 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,26 @@ int	create_threads(pthread_t *checking, pthread_t *newt, t_vars *vars)
 	int	i;
 
 	i = 0;
-	if (pthread_create(checking, NULL, &check_on_philos, vars))
-		return (1);
-	pthread_detach(*checking);
-	vars->start_sim = get_time();
+	pthread_mutex_init(&vars->flag, NULL);
+	pthread_mutex_lock(&vars->flag);
 	while (i < vars->num_philo)
 	{
 		if (pthread_create(&newt[i], NULL, &philosopher_dines, &vars->philo[i]))
 			return (1);
 		i++;
 	}
+	vars->start_sim = get_time();
+	pthread_mutex_unlock(&vars->flag);
+	if (pthread_create(checking, NULL, &check_on_philos, vars))
+		return (1);
+	pthread_detach(*checking);
 	return (0);
 }
 
 int	check_death(t_vars *vars, int i)
 {
-	int				j;
 	struct timeval	tv;
 
-	j = 0;
 	gettimeofday(&tv, NULL);
 	pthread_mutex_lock(vars->alive);
 	if (vars->philo[i].time_of_death + 5000
@@ -47,8 +48,6 @@ int	check_death(t_vars *vars, int i)
 			printf("%ld %d died\n",
 				get_time() - vars->start_sim, vars->philo[i].id);
 		}
-		while (j < vars->num_philo)
-			pthread_mutex_unlock(&vars->forks[j++]);
 		pthread_mutex_unlock(vars->alive);
 		return (1);
 	}
@@ -62,7 +61,7 @@ void	*check_on_philos(void *arg)
 	int				i;
 
 	vars = (t_vars *)arg;
-	while (vars->all_alive)
+	while (1)
 	{
 		i = 0;
 		while (i < vars->num_philo)
@@ -76,15 +75,32 @@ void	*check_on_philos(void *arg)
 	return (NULL);
 }
 
+void	init_time_of_death(t_philo *philo)
+{
+	struct timeval	tv;
+	long			time;
+
+	gettimeofday(&tv, NULL);
+	time = tv.tv_sec * 1000000 + tv.tv_usec;
+	philo->time_of_death = time + (philo->vars->time_to_die * 1000);
+}
+
 void	*philosopher_dines(void *arg)
 {
-	t_philo	*philo;
+	t_philo			*philo;
 
 	philo = (t_philo *)arg;
-	while (1)
+	init_time_of_death(philo);
+	pthread_mutex_lock(&philo->vars->flag);
+	pthread_mutex_unlock(&philo->vars->flag);
+	if (philo->id % 2 == 0)
 	{
 		if (print_msg("is thinking", philo))
 			return (NULL);
+		ft_usleep(philo->vars->time_to_eat / 2);
+	}
+	while (1)
+	{
 		if (take_forks(philo))
 			return (NULL);
 		if (eat(philo))
@@ -93,6 +109,7 @@ void	*philosopher_dines(void *arg)
 		pthread_mutex_unlock(philo->left_fork);
 		if (ft_sleep(philo))
 			return (NULL);
+		if (print_msg("is thinking", philo))
+			return (NULL);
 	}
-	return (NULL);
 }

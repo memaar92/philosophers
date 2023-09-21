@@ -6,7 +6,7 @@
 /*   By: mamesser <mamesser@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 14:53:29 by mamesser          #+#    #+#             */
-/*   Updated: 2023/09/17 13:19:16 by mamesser         ###   ########.fr       */
+/*   Updated: 2023/09/21 10:41:31 by mamesser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_usleep(int wait)
 
 	start = get_time();
 	while (get_time() < start + wait)
-		usleep(50);
+		usleep(150);
 	return (0);
 }
 
